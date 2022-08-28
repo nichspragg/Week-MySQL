@@ -5,12 +5,13 @@ DROP TABLE material;
 DROP TABLE project;
 
 CREATE TABLE project (
-	project_id INT NOT NULL PRIMARY KEY,
+	project_id INT NOT NULL AUTO_INCREMENT,
     project_name VARCHAR(128) NOT NULL,
     estimated_hours DECIMAL(7,2),
     actual_hours DECIMAL(7,2),
     difficulty INT,
-    notes TEXT 
+    notes TEXT,
+    PRIMARY KEY (project_id)
 );
 
 CREATE TABLE material (
