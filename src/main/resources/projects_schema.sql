@@ -1,8 +1,9 @@
 DROP TABLE project_category;
-DROP TABLE category;
-DROP TABLE step;
 DROP TABLE material;
+DROP TABLE step;
+DROP TABLE category;
 DROP TABLE project;
+
 
 CREATE TABLE project (
 	project_id INT NOT NULL AUTO_INCREMENT,
@@ -14,18 +15,15 @@ CREATE TABLE project (
     PRIMARY KEY (project_id)
 );
 
-CREATE TABLE material (
-	material_id INT NOT NULL PRIMARY KEY,
-    project_id INT NOT NULL,
-    material_name VARCHAR(128) NOT NULL,
-    num_required INT,
-    cost DECIMAL(7,2),
-    FOREIGN KEY (project_id)
-		REFERENCES project(project_id)
+CREATE TABLE category (
+	category_id INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (category_id),
+    category_name VARCHAR(128) NOT NULL
 );
 
 CREATE TABLE step (
-	step_id	 INT NOT NULL PRIMARY KEY,
+	step_id	 INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (step_id),
     project_id INT NOT NULL,
     step_text TEXT NOT NULL,
     step_order INT NOT NULL,
@@ -33,9 +31,15 @@ CREATE TABLE step (
 		REFERENCES project(project_id)
 );
 
-CREATE TABLE category (
-	category_id INT NOT NULL PRIMARY KEY,
-    category_name VARCHAR(128) NOT NULL
+CREATE TABLE material (
+	material_id INT NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (material_id),
+    project_id INT NOT NULL,
+    material_name VARCHAR(128) NOT NULL,
+    num_required INT,
+    cost DECIMAL(7,2),
+    FOREIGN KEY (project_id)
+		REFERENCES project(project_id)
 );
 
 CREATE TABLE project_category (
