@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -66,7 +67,7 @@ public class ProjectDao extends DaoBase{
 
 	public List<Project> fetchAllProjects() {
 		// @formatter:off
-		String sql = "SELECT * FROM " + PROJECT_TABLE + " ORDER BY project_name";
+		String sql = "SELECT * FROM " + PROJECT_TABLE + " ORDER BY project_Id";
 		// @formatter:on
 			
 		try(Connection conn = DbConnection.getConnection()){
@@ -87,10 +88,9 @@ public class ProjectDao extends DaoBase{
 			throw new DbException(e); }
 		}
 
-	public Optional<Project> fetchProjectById(Integer projectId) {
+public Optional<Project> fetchProjectById(Integer projectId) {
 		
 		String sql = "SELECT * FROM " + PROJECT_TABLE + " WHERE project_id = ?";
-			
 		try(Connection conn = DbConnection.getConnection()){
 			startTransaction(conn);
 			try{
@@ -100,7 +100,7 @@ public class ProjectDao extends DaoBase{
 					try(ResultSet rs = stmt.executeQuery()){
 						if(rs.next()) {
 							project = extract(rs, Project.class); }
-						}
+							} 
 					}
 				if(Objects.nonNull(project)) {
 					project.getMaterials().addAll(fetchMaterialsForProject(conn, projectId));

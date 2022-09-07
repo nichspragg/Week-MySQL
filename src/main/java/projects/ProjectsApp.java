@@ -1,7 +1,9 @@
 package projects;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -19,6 +21,7 @@ private Scanner scanner = new Scanner(System.in);
 
 private ProjectService projectService = new ProjectService();
 private Project curProject = new Project();
+private List<Integer> projectNums = new ArrayList <>();
 
 public static void main(String[] args) {
 		
@@ -61,17 +64,20 @@ private void processUserSelections() {
 private void selectProject() {
 	listProjects();
 	Integer projectId = getIntInput("Enter a project ID to select a project");
-	curProject = null;
-	curProject = projectService.fetchProjectById(projectId);
+//	curProject = null;
+	if(projectNums.contains(projectId)) {
+		curProject = null;
+		curProject = projectService.fetchProjectById(projectId); }
+	else { System.out.println("Project with project ID=" + projectId + " does not exist.");	}
 	}
 
 private void listProjects() {
 	List<Project> projects = projectService.fetchAllProjects();
-	
+		
 	System.out.println("\nProjects:");
 	
 	projects.forEach(project -> System.out.println("  " + project.getProjectId() + ": " + project.getProjectName()));
-	
+	projects.forEach(project -> projectNums.add(project.getProjectId() ));
 	}
 private void createProject() {
 	String projectName = getStringInput("Enter the project name");
