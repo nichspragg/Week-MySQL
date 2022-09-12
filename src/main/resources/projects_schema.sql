@@ -28,7 +28,7 @@ CREATE TABLE step (
     step_text TEXT NOT NULL,
     step_order INT NOT NULL,
     FOREIGN KEY (project_id)
-		REFERENCES project(project_id)
+		REFERENCES project(project_id) ON DELETE CASCADE
 );
 
 CREATE TABLE material (
@@ -39,15 +39,36 @@ CREATE TABLE material (
     num_required INT,
     cost DECIMAL(7,2),
     FOREIGN KEY (project_id)
-		REFERENCES project(project_id)
+		REFERENCES project(project_id) ON DELETE CASCADE
 );
 
 CREATE TABLE project_category (
 	project_id INT NOT NULL,
     FOREIGN KEY (project_id)
-		REFERENCES project(project_id),
+		REFERENCES project(project_id) ON DELETE CASCADE,
 	category_id INT NOT NULL,
     FOREIGN KEY (category_id)
-		REFERENCES category(category_id),
+		REFERENCES category(category_id) ON DELETE CASCADE,
 	UNIQUE(project_id,category_id)
 );
+
+-- add data
+
+INSERT INTO project (project_name, estimated_hours, actual_hours, difficulty, notes) 
+	VALUES ('Hang picture', .1, .2, 1, 'use panel nails or smaller');
+INSERT INTO material (project_id, material_name, num_required, cost) 
+	VALUES (3, 'panel nail', 1, 1);
+INSERT INTO material (project_id, material_name, num_required, cost) 
+	VALUES (3, 'level', 1, 8);
+INSERT INTO step (project_id, step_text, step_order) 
+	VALUES (3, 'Insert nail into wall', 1);
+INSERT INTO step (project_id, step_text, step_order) 
+	VALUES (3, 'Place back of picture on the nail, use hanging grooves if present', 2);
+INSERT INTO step (project_id, step_text, step_order) 
+	VALUES (3, 'Gently lower level down to top of frame. Adjust as needed', 3);
+INSERT INTO category (category_id, category_name) 
+	VALUES (2, 'Decor');
+INSERT INTO project_category (project_id, category_id) 
+	VALUES (3, 2);
+
+
